@@ -4,13 +4,34 @@ import 'package:flutter/services.dart';
 void main() {
   runApp(const MyApp());
 }
+class Data{
+  int blogViews;
+  String blogTitle;
+  String blogImageUrl;
+  String blogAuthor;
+  Data({required this.blogViews, required this.blogTitle, required this.blogAuthor, required this.blogImageUrl});
+
+}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const int number = 10;
+    const String b1Image = "https://images.unsplash.com/photo-1640622659208-98d70201f2da?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80";
+    const String b2Image = "https://images.unsplash.com/photo-1646298106353-2c5ffcd8f33e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80";
+    const String b3Image = "https://images.unsplash.com/photo-1646265780630-b639fcc8fc28?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1738&q=80";
+    
+    Data d1 = Data(blogViews: 1200, blogTitle: "What Did I Learned ?", blogAuthor: "Random Person", blogImageUrl: "https://images.unsplash.com/photo-1640622659208-98d70201f2da?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80");
+    Data d2 = Data(blogViews: 1200, blogTitle: "Interior Design that will make your home look better", blogAuthor: "Another Person", blogImageUrl: "https://images.unsplash.com/photo-1646298106353-2c5ffcd8f33e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80");
+    Data d3 = Data(blogViews: 1200, blogTitle: "Are young children more stressed ?", blogAuthor: "Another Random Person", blogImageUrl: "https://images.unsplash.com/photo-1646265780630-b639fcc8fc28?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1738&q=80");
+
+
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -29,7 +50,20 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color.fromRGBO(249, 250, 250, 1),
           body: Container(
             child: ListView(
-              children: [TopHeading(), SearchBar(), MainBlogInfoBox()],
+              children: [
+                TopHeading(),
+                SearchBar(),
+                Column(
+                  children: [
+                    MainBlogInfoBox(data: d1),
+                    SizedBox(height: 16),
+                    MainBlogInfoBox(data: d2),
+                    SizedBox(height: 16),
+                    MainBlogInfoBox(data: d3),
+
+                  ],
+                )
+              ],
             ),
           ),
         ));
@@ -42,6 +76,7 @@ class TopHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 32, bottom: 32),
       child: Center(
         child: Column(
           children: [
@@ -69,6 +104,7 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 32),
       child: Container(
         height: 52,
         margin: EdgeInsets.only(left: 24, right: 24),
@@ -127,8 +163,9 @@ class SearchBar extends StatelessWidget {
 }
 
 class MainBlogInfoBox extends StatelessWidget {
-  const MainBlogInfoBox({Key? key}) : super(key: key);
+  const MainBlogInfoBox({Key? key, required this.data}) : super(key: key);
 
+  final Data data;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -140,8 +177,115 @@ class MainBlogInfoBox extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(12)),
                 image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage("https://images.unsplash.com/photo-1592743263126-bb241ee76ac7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bmF0dXJhbCUyMGJhY2tncm91bmR8ZW58MHx8MHx8&w=1000&q=80"))),
+                    image: NetworkImage(this.data.blogImageUrl))),
+            child: Stack(
+              children: [
+                FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(100), bottomRight: Radius.circular(100)),
+                        color: Color(
+                          0x66000000,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 16),
+                            child: Icon(
+                              Icons.airplanemode_active_sharp,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 6, left: 8, top: 5, bottom: 5),
+                            child: Text(
+                              "1.2k+",
+                              style: TextStyle(
+                                color: Color(
+                                  0xe5ffffff,
+                                ),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "Poppins",
+                                letterSpacing: 0.08,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(0, 0, 0, 0.2),
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(Radius.circular(12))),
+                ),
+                Container(
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: FittedBox(
+                        fit: BoxFit.fitHeight,
+
+                        // margin: EdgeInsets.only(left: 16),
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 16, left: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                this.data.blogTitle.length > 30 ? this.data.blogTitle.substring(0, 30)+'...' : this.data.blogTitle,
+                                style: TextStyle(
+                                  color: Color(
+                                    0xffffffff,
+                                  ),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "Poppins",
+                                  letterSpacing: 0,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)),
+                                      color: Color(
+                                        0xffc4c4c4,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 8),
+                                    child: Text(
+                                      this.data.blogAuthor + " " + "• 2 hours ago",
+                                      style: TextStyle(
+                                        color: Color(
+                                          0xffffffff,
+                                        ),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        letterSpacing: 0,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )),
+                  ),
+                )
+              ],
+            ),
           ),
         ));
   }
 }
+
+
